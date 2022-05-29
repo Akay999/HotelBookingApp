@@ -59,6 +59,31 @@ export const getAllHotels = async (req, res, next) => {
 };
 
 
+export const getAllByCity = async (req, res, next) => {
+    const cities = req.query.cities.split(",");
+    try {
+        const list = await Promise.all(cities.map(city => {
+            return Hotel.countDocuments({city : city})
+        }))
+        res.status(200).json(list);
+    }
+    catch(err) {
+        next(err);
+    }
+};
+
+
+export const getAllByType = async (req, res, next) => {
+    try {
+        const allHotels = await Hotel.find();
+        res.status(200).json(allHotels);
+    }
+    catch(err) {
+        next(err);
+    }
+};
+
+
 
 
 //FOR CRETAING CUSTOM ERROR ON SOME CONDITION WE CAN USE
